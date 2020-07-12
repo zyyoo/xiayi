@@ -7,49 +7,46 @@
     <meta charset="utf-8">
     <title></title>
 </head>
-<body>
-<div style="margin: 20px;width: 300px">
-    <form @submit.prevent="submit($event)" class="form-group">
-            <input type="text" class="form-control" placeholder="请输公司或者域名" name="domain">
-            <input type="submit" value="确定" class="btn btn-default" style="margin-top: 10px;float: left"/>
-    </form>
+<body style="background: antiquewhite">
+<div id="app">
+    <div style="margin: 20px" class="form-inline">
+            <input type="text" class="form-control" placeholder="请输公司或者域名,逗号(,)分割多个" v-model="info" style="width: 400px">
+            <input type="submit" value="确定" class="btn btn-default" @click="dianji"/>
+    </div>
+    <table class="table">
+        <div v-if="sites">
+            <ul id="example-1">
+                <li v-for="site in sites">
+                    [[ site.domain ]] - [[ site.ip ]] - [[ site.user ]]
+                </li>
+            </ul>
+        </div>
+    </table>
 </div>
-<table class="table">
-
-</table>
-{#<div id="app">#}
-{#    <input v-model="message" placeholder="请输入域名或公司名字..">#}
-{#    <div v-for="site in sites">#}
-{#    #}
-{#        {% verbatim myblock %}#}
-{#            1.{{ site.domain }}#}
-{#        {% endverbatim myblock %}#}
-{#    </div>#}
 
 </div>
 <script src="https://cdn.jsdelivr.net/npm/vue@latest/dist/vue.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/axios@0.18.0/dist/axios.min.js"></script>
 <script type="text/javascript">
+    var app = new Vue({
+        delimiters: ['[[', ']]'],
+        el: '#app',
+        data: function () {
+            return {
+                info: null,
+                sites: null
+            };
+        },
+        methods: {
+            dianji() {
+                console.log(this.info);
+                var params = {info: this.info};
+                axios.get('/api/v1/info/domain', {params: params}).then(res => this.sites = res.data.data).catch();
+                console.log('11');
+            },
+        },
+    });
 
-
-    methods:{
-        submit: function (event) {
-            var formData = new FormData(event.target);
-            //vue-resource
-            this.$http.post('/api', formData).then(res => {
-                // success callback
-            }, err => {
-                // error callback
-            });
-            //axios
-            axios.post('/user', obj).then(res => {
-                // success callback
-            }).catch(err => {
-                // error callback
-            });
-        }
-
-    }
 </script>
 </body>
 </html>

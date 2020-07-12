@@ -17,9 +17,15 @@ class ServerInfo(APIView):
     def get(self, request):
         res = BaseResponse()
         info = request.GET.get('info', '').strip()
-        print(info)
+        if ',' in info:
+            info = info.split(',')
+            print(info)
         if info:
-            info_obj = DbServerInfo.objects.filter(Q(domain__icontains=info) | Q(user__icontains=info)).values()
+            if isinstance(info,str):
+                info_obj = DbServerInfo.objects.filter(Q(domain__icontains=info) | Q(user__icontains=info)).values()[:100]
+            else:
+                info_obj = DbServerInfo.objects.filter(Q(domain__in=info) | Q(user__in=info)).values()[
+                           :100]
             if info_obj:
                 for i in info_obj:
                     res.data.append(i)
@@ -30,5 +36,5 @@ class ServerInfo(APIView):
             if info_obj:
                 for i in info_obj:
                     res.data.append(i)
-        print(res.dict())
+        #print(res.dict())
         return JsonResponse(res.dict())
