@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title></title>
+</head>
+<body>
+<div id="app">
+
+    <div v-for="site in sites">
+        1:{{ site.name }}
+    </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/vue@latest/dist/vue.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios@0.18.0/dist/axios.min.js"></script>
+<script type="text/javascript">
+    new Vue({
+        el: '#app',
+        data: {
+                sites: [
+                    {name: 'Runoob'},
+                    {name: 'Google'},
+                    {name: 'Taobao'}
+                ]
+        },
+        mounted() {
+            axios
+                .get('/api/v1/info/domain')
+                .then(response => (this.sites = response.data.data))
+                .catch(function (error) { // 请求失败处理
+                    console.log(error);
+                });
+        }
+    })
+</script>
+
+
+</body>
+</html>

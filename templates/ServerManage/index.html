@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <meta charset="utf-8">
+    <title></title>
+</head>
+<body>
+<div style="margin: 20px;width: 300px">
+    <form @submit.prevent="submit($event)" class="form-group">
+            <input type="text" class="form-control" placeholder="请输公司或者域名" name="domain">
+            <input type="submit" value="确定" class="btn btn-default" style="margin-top: 10px;float: left"/>
+    </form>
+</div>
+<table class="table">
+
+</table>
+{#<div id="app">#}
+{#    <input v-model="message" placeholder="请输入域名或公司名字..">#}
+{#    <div v-for="site in sites">#}
+{#    #}
+{#        {% verbatim myblock %}#}
+{#            1.{{ site.domain }}#}
+{#        {% endverbatim myblock %}#}
+{#    </div>#}
+
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue@latest/dist/vue.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios@0.18.0/dist/axios.min.js"></script>
+<script type="text/javascript">
+
+
+    methods:{
+        submit: function (event) {
+            var formData = new FormData(event.target);
+            //vue-resource
+            this.$http.post('/api', formData).then(res => {
+                // success callback
+            }, err => {
+                // error callback
+            });
+            //axios
+            axios.post('/user', obj).then(res => {
+                // success callback
+            }).catch(err => {
+                // error callback
+            });
+        }
+
+    }
+</script>
+</body>
+</html>
